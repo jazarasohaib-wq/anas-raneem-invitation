@@ -24,8 +24,150 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare invitation entrypoint
-        run: cp 'index(2).html' index.html
+      - name: Build final invitation
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # ---------- HTML / TYPOGRAPHY ----------
+          src = Path("index(2).html")
+          html = src.read_text(encoding="utf-8")
+
+          # Palette: white + gold only. Remove the old copper/red palette.
+          html = html.replace("--cream:#f6efe3;", "--cream:#ffffff;")
+          html = html.replace("--muted:rgba(246,239,227,.68);", "--muted:rgba(255,255,255,.78);")
+          html = html.replace("--root:#aa6237;", "--root:#ffffff;")
+          html = html.replace("--root2:#c78352;", "--root2:#f1d9a7;")
+
+          # Give each name its own explicit color.
+          html = html.replace(
+              '<h1>أنس <span>×</span> رنيم</h1>',
+              '<h1><span class="anas-name">أنس</span> <span class="names-x">×</span> <span class="raneem-name">رنيم</span></h1>'
+          )
+          html = html.replace(
+              '<h2>أنس <span>×</span> رنيم</h2>',
+              '<h2><span class="anas-name">أنس</span> <span class="names-x">×</span> <span class="raneem-name">رنيم</span></h2>'
+          )
+          html = html.replace(
+              'خيطان مختلفان… يلتقيان في قلبٍ واحد.',
+              'خيط أنس الأبيض وخيط رنيم الذهبي… يرسمان قلبًا واحدًا.'
+          )
+
+          override = r'''
+          /* FINAL WHITE + GOLD PALETTE */
+          .copy,.copy p,.hold-label,.details div{color:#fff!important}
+          .copy.hero em,
+          .copy small,
+          .anas-name + .names-x,
+          .raneem-name{color:#f1d9a7!important}
+          .anas-name{color:#fff!important}
+          .copy.names h1 span,.copy.final h2 span{color:inherit}
+          .copy.names h1 .anas-name,.copy.final h2 .anas-name{color:#fff!important}
+          .copy.names h1 .names-x,.copy.final h2 .names-x,
+          .copy.names h1 .raneem-name,.copy.final h2 .raneem-name{color:#f1d9a7!important}
+          .copy.contract,.copy.contract p{color:#fff!important}
+          .copy.contract small,.copy.contract h2{color:#f1d9a7!important}
+          .progress i{background:linear-gradient(90deg,#fff,#f1d9a7,#fff)!important}
+          '''
+          html = html.replace("</style>", override + "\n</style>", 1)
+          Path("index.html").write_text(html, encoding="utf-8")
+
+          # ---------- CANVAS / HEART ANIMATION ----------
+          js_path = Path("script.js")
+          js = js_path.read_text(encoding="utf-8")
+
+          # Remove all remaining copper/red drawing colors.
+          js = js.replace("#aa6237", "#ffffff")
+          js = js.replace("#a96237", "#ffffff")
+          js = js.replace("#c78352", "#f1d9a7")
+
+          # Keep the contract readable with white/gold text.
+          js = js.replace("ctx.fillStyle='#eee2cb'", "ctx.fillStyle='#10171b'")
+          js = js.replace("ctx.strokeStyle='rgba(80,55,30,.18)'", "ctx.strokeStyle='rgba(241,217,167,.28)'")
+          js = js.replace("ctx.strokeStyle='#293630'", "ctx.strokeStyle='#f1d9a7'")
+
+          # The two original threads themselves form the heart.
+          # Anas = right half, white. Raneem = left half, gold.
+          new_heart = r'''function heart(p){
+            const cx=W*.5,cy=H*.46;
+            const topY=cy-H*.085;
+            const bottomY=cy+H*.18;
+            const anasStart=[W*.80,H*.43];
+            const raneemStart=[W*.20,H*.43];
+
+            function bezier(p0,p1,p2,p3,steps=70){
+              const out=[];
+              for(let i=0;i<=steps;i++){
+                const u=i/steps,v=1-u;
+                out.push([
+                  v*v*v*p0[0]+3*v*v*u*p1[0]+3*v*u*u*p2[0]+u*u*u*p3[0],
+                  v*v*v*p0[1]+3*v*v*u*p1[1]+3*v*u*u*p2[1]+u*u*u*p3[1]
+                ]);
+              }
+              return out;
+            }
+
+            // Same white Anas thread: from Anas directly into the right half of the heart.
+            const anasLead=bezier(
+              anasStart,
+              [W*.72,H*.405],
+              [cx+W*.095,topY-H*.018],
+              [cx,topY],
+              34
+            );
+            const anasHalf=bezier(
+              [cx,topY],
+              [cx+W*.20,topY-H*.105],
+              [W*.86,cy+H*.025],
+              [cx,bottomY],
+              88
+            );
+            const anasPath=anasLead.concat(anasHalf.slice(1));
+
+            // Same gold Raneem thread: from Raneem directly into the left half of the heart.
+            const raneemLead=bezier(
+              raneemStart,
+              [W*.28,H*.405],
+              [cx-W*.095,topY-H*.018],
+              [cx,topY],
+              34
+            );
+            const raneemHalf=bezier(
+              [cx,topY],
+              [cx-W*.20,topY-H*.105],
+              [W*.14,cy+H*.025],
+              [cx,bottomY],
+              88
+            );
+            const raneemPath=raneemLead.concat(raneemHalf.slice(1));
+
+            const drawP=smooth(0,1,p);
+            glow(cx,cy+H*.02,Math.min(W,H)*.19,.10*drawP,'#f1d9a7');
+            line(partial(anasPath,drawP),'#ffffff',2.9,.99);
+            line(partial(raneemPath,drawP),'#f1d9a7',2.9,.99);
+
+            if(drawP>.84){
+              const pulse=smooth(.84,1,drawP);
+              glow(cx,bottomY,32,.14*pulse,'#f1d9a7');
+            }
+          }'''
+
+          pattern = r"function heart\(p\)\{.*?\n\}\nfunction majlis\(p\)\{"
+          replacement = new_heart + "\nfunction majlis(p){"
+          js, n = re.subn(pattern, replacement, js, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit("Could not replace heart animation")
+
+          # Early thread is white/gold too, never red.
+          js = js.replace(
+              "glow(ex,ey,42,.18,'#d7b777');line(pts,'#e7c98f',2.1,.95);line(pts.map(p=>[p[0]+3,p[1]+1]),'#ffffff',1,.55);",
+              "glow(ex,ey,42,.18,'#f1d9a7');line(pts,'#ffffff',2.1,.95);line(pts.map(p=>[p[0]+2,p[1]+1]),'#f1d9a7',1,.65);"
+          )
+
+          js_path.write_text(js, encoding="utf-8")
+          PY
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
