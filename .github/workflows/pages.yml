@@ -23,14 +23,63 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Fix press-and-hold interaction
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          s = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  ".hold-ui{position:absolute;z-index:95;left:50%;bottom:44px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;transition:.3s ease}",
+                  ".hold-ui{position:absolute;z-index:99;left:50%;bottom:44px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:auto;touch-action:none;cursor:pointer;border:0;padding:0;background:transparent;color:inherit;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;transition:.3s ease}"
+              ),
+              (
+                  ".holding .hold-label{color:rgba(241,217,167,.86)}",
+                  ".holding .hold-label{color:rgba(241,217,167,.86)}.hold-ui:disabled,.completed .hold-ui{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}.completed .audio{opacity:0;pointer-events:none}"
+              ),
+              (
+                  '<div class="hold-ui"><div class="hold-ring"></div><div class="hold-label" id="holdLabel">اضغط باستمرار لتمسك الخيط</div></div>',
+                  '<button class="hold-ui" id="holdButton" type="button" aria-label="اضغط باستمرار لمتابعة الدعوة"><span class="hold-ring"></span><span class="hold-label" id="holdLabel">اضغط باستمرار لتمسك الخيط</span></button>'
+              ),
+              (
+                  "const bar=document.getElementById('bar'),label=document.getElementById('holdLabel'),tap=document.getElementById('tapzone'),audioBtn=document.getElementById('audio');const details=document.getElementById('details'),mapWrap=document.getElementById('mapWrap');",
+                  "const bar=document.getElementById('bar'),label=document.getElementById('holdLabel'),tap=document.getElementById('tapzone'),holdBtn=document.getElementById('holdButton'),audioBtn=document.getElementById('audio');const details=document.getElementById('details'),mapWrap=document.getElementById('mapWrap');"
+              ),
+              (
+                  "if(t>=TOTAL){holding=false;shell.classList.remove('holding');label.textContent='اكتملت الحكاية — اضغط باستمرار لإعادتها';setAudio(false);return}",
+                  "if(t>=TOTAL){holding=false;shell.classList.remove('holding');shell.classList.add('completed');label.textContent='اكتملت الحكاية';holdBtn.disabled=true;tap.style.pointerEvents='none';setAudio(false);render();return}"
+              ),
+              (
+                  "function down(e){e.preventDefault();if(t>=TOTAL)t=0;startAudio();holding=true;last=0;shell.classList.add('holding');shell.classList.remove('paused-progress');label.textContent='أنت تمسك خيط الحكاية…';setAudio(true);if(navigator.vibrate)navigator.vibrate(12);raf=requestAnimationFrame(loop)}",
+                  "function down(e){e.preventDefault();if(t>=TOTAL)return;if(e.currentTarget&&e.currentTarget.setPointerCapture&&e.pointerId!==undefined){try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}}startAudio();holding=true;last=0;shell.classList.add('holding');shell.classList.remove('paused-progress');label.textContent='أنت تمسك خيط الحكاية…';setAudio(true);if(navigator.vibrate)navigator.vibrate(12);raf=requestAnimationFrame(loop)}"
+              ),
+              (
+                  "tap.addEventListener('pointerdown',down);tap.addEventListener('pointerup',up);tap.addEventListener('pointercancel',up);tap.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')up()});tap.addEventListener('pointermove',e=>{const rect=shell.getBoundingClientRect();px=clamp((e.clientX-rect.left)/rect.width);py=clamp((e.clientY-rect.top)/rect.height)});",
+                  "function bindHold(el){el.addEventListener('pointerdown',down,{passive:false});el.addEventListener('pointerup',up,{passive:false});el.addEventListener('pointercancel',up,{passive:false});el.addEventListener('lostpointercapture',up)}bindHold(tap);bindHold(holdBtn);tap.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')up()});tap.addEventListener('pointermove',e=>{const rect=shell.getBoundingClientRect();px=clamp((e.clientX-rect.left)/rect.width);py=clamp((e.clientY-rect.top)/rect.height)});holdBtn.addEventListener('contextmenu',e=>e.preventDefault());"
+              ),
+          ]
+
+          for old, new in replacements:
+              if old not in s:
+                  raise SystemExit(f"Expected pattern not found: {old[:80]}")
+              s = s.replace(old, new, 1)
+
+          path.write_text(s, encoding="utf-8")
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
