@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#07090b">
+<meta name="description" content="دعوة الجاهة وكتب الكتاب — أنس ورنيم — الجمعة 18 سبتمبر 2026 من 4 إلى 7 مساءً — ديوان آل صمادي">
+<title>أنس × رنيم | 18.09.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#ffffff;
+  --muted:rgba(255,255,255,.78);
+  --gold:#F2D28B;
+  --gold2:#F2D28B;
+  --gold3:#F2D28B;
+  --root:#ffffff;
+  --root2:#F2D28B;
+  --bg:#07090b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050607}
+body{
+  font-family:"Tajawal",Tahoma,Arial,"Segoe UI",sans-serif;
+  color:var(--cream);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+button{font:inherit}
+#invite{
+  position:fixed; inset:0; display:grid; place-items:center;
+  background:radial-gradient(circle at 50% 24%,#162228 0,#0a0f12 38%,#050607 76%);
+  overflow:hidden;
+}
+.shell{
+  position:relative;
+  width:min(100vw,460px);
+  height:100vh;
+  max-height:900px;
+  overflow:hidden;
+  background:#07090b;
+  isolation:isolate;
+  touch-action:none;
+}
+@media(min-width:700px){
+  .shell{height:min(94vh,860px);border-radius:30px;border:1px solid rgba(255,255,255,.07);box-shadow:0 40px 120px rgba(0,0,0,.6)}
+}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:-30%;z-index:80;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='4' stitchTiles='stitchTiles'/%3E%3C/filter id='n'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");animation:grain .5s steps(2) infinite}
+@keyframes grain{0%{transform:translate(-2%,-1%)}25%{transform:translate(1%,2%)}50%{transform:translate(2%,-1%)}75%{transform:translate(-1%,1%)}100%{transform:none}}
+.vignette{position:absolute;inset:0;z-index:79;pointer-events:none;box-shadow:inset 0 0 160px rgba(0,0,0,.64)}
+.hud{position:absolute;z-index:90;top:max(18px,env(safe-area-inset-top));left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.17em;color:rgba(255,255,255,.42)}
+.hud .brand{display:flex;align-items:center;gap:8px}.hud .brand i{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
+.progress{position:absolute;z-index:90;left:20px;right:20px;bottom:max(18px,env(safe-area-inset-bottom));height:2px;background:rgba(255,255,255,.11);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--root),var(--gold2))}
+.hold-ui{
+  position:absolute;z-index:99;left:50%;bottom:44px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  pointer-events:auto;touch-action:none;cursor:pointer;border:0;padding:0;background:transparent;color:inherit;
+  -webkit-appearance:none;appearance:none;-webkit-touch-callout:none;transition:.3s ease;
+}
+.hold-ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(215,183,119,.35);background:radial-gradient(circle,rgba(215,183,119,.09),transparent 66%);box-shadow:0 0 0 0 rgba(215,183,119,.16);transition:.25s ease}
+.hold-ring::before{content:"";width:24px;height:24px;border-radius:50%;background:rgba(215,183,119,.14);border:1px solid rgba(241,217,167,.3);box-shadow:0 0 22px rgba(241,217,167,.18)}
+.holding .hold-ring{transform:scale(.93);border-color:rgba(241,217,167,.72);animation:ringpulse 1s ease-in-out infinite}
+@keyframes ringpulse{50%{box-shadow:0 0 0 18px rgba(215,183,119,0),0 0 34px rgba(215,183,119,.12)}}
+.hold-label{font-size:11px;color:rgba(255,255,255,.52);white-space:nowrap}
+.holding .hold-label{color:rgba(241,217,167,.92)}
+.completed .hold-ui,.hold-ui:disabled{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}
+.copy{position:absolute;z-index:60;left:28px;right:28px;text-align:center;pointer-events:none;transition:opacity .7s ease,transform .7s ease,filter .7s ease;opacity:0;transform:translateY(10px);filter:blur(6px)}
+.copy.on{opacity:1;transform:none;filter:none}
+.copy.kicker{top:14%;font-size:9px;letter-spacing:.25em;color:rgba(241,217,167,.88)}
+.copy.hero{top:21%;font-family:"Aref Ruqaa Ink",Georgia,"Times New Roman",serif;font-size:clamp(36px,10vw,54px);line-height:1.8;text-shadow:0 4px 24px rgba(0,0,0,.25)}
+.copy.hero{color:#fff}.copy.hero em{font-style:normal;color:var(--gold2)}
+.copy.names{top:37%}
+.copy.names h1{margin:0;font-family:"Aref Ruqaa Ink",Georgia,"Times New Roman",serif;font-weight:700;font-size:clamp(64px,18vw,96px);line-height:1.08;text-shadow:0 6px 26px rgba(0,0,0,.26)}
+.copy.names h1 span{color:var(--gold2)}
+.copy.names p,.copy.body p{font-size:13px;line-height:2.1;color:rgba(255,255,255,.85);margin:13px auto 0;max-width:320px}
+.copy.title,.copy.contract,.copy.final{font-family:"Tajawal",Tahoma,sans-serif}
+.copy.title{top:13%}
+.copy.title small,.copy.contract small,.copy.final small{font-size:10px;letter-spacing:.22em;color:rgba(241,217,167,.88)}
+.copy.title h2,.copy.contract h2,.copy.final h2{margin:6px 0 4px;font-family:"Aref Ruqaa Ink",Georgia,"Times New Roman",serif;font-size:clamp(52px,16vw,82px);font-weight:700;color:#fff}
+.copy.title p,.copy.contract p,.copy.final p{font-size:13px;line-height:2;color:rgba(255,255,255,.84);max-width:320px;margin:auto}
+.copy.contract{top:12%;color:#FFFFFF}.copy.contract small{color:#F2D28B}.copy.contract p{color:#FFFFFF}
+.copy.final{top:22%}.copy.final h2 span{color:var(--gold2)}
+.details{position:absolute;z-index:61;left:34px;right:34px;bottom:120px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;opacity:0;transform:translateY(12px);transition:.8s ease}
+.details.on{opacity:1;transform:none}
+.details div{padding-top:10px;border-top:1px solid rgba(241,217,167,.22);font-size:10px;line-height:1.8;color:rgba(255,255,255,.84);text-align:center}
+.pause-chip{position:absolute;z-index:96;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(7,10,12,.52);backdrop-filter:blur(10px);color:rgba(255,255,255,.62);font-size:10px;opacity:0;pointer-events:none;transition:.22s}
+.paused-progress .pause-chip{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.audio{position:absolute;z-index:97;left:18px;bottom:36px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(10,13,15,.45);backdrop-filter:blur(8px);color:rgba(255,255,255,.65);display:grid;place-items:center;cursor:pointer;font-size:14px}
+.completed .audio{opacity:0;pointer-events:none}
+.map-wrap{position:absolute;z-index:98;left:28px;right:28px;bottom:86px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.7s ease}
+.map-wrap.on{opacity:1;transform:none;pointer-events:auto}
+.map-btn{display:flex;align-items:center;justify-content:center;text-decoration:none;pointer-events:auto;touch-action:manipulation;-webkit-touch-callout:default;min-height:54px;border-radius:18px;background:linear-gradient(135deg,#fff3d1,#F2D28B);color:#161918;font-size:13px;font-weight:700;box-shadow:0 16px 50px rgba(0,0,0,.35)}
+.tapzone{position:absolute;inset:0;z-index:70;cursor:pointer}
+@media(max-height:690px){.copy.hero{top:18%}.copy.names{top:34%}.copy.title{top:10%}.details{bottom:105px}}
+
+/* Final palette: white + gold only */
+.copy,.copy p,.hold-label,.details div{color:#fff!important}
+.copy.hero em,.copy small,.raneem-name,.names-x{color:#F2D28B!important}
+.anas-name{color:#fff!important;text-shadow:0 0 12px rgba(255,255,255,.12)}
+.copy.names h1 .anas-name,.copy.final h2 .anas-name{color:#fff!important;text-shadow:0 0 12px rgba(255,255,255,.12)}
+.copy.names h1 .names-x,.copy.final h2 .names-x,
+.copy.names h1 .raneem-name,.copy.final h2 .raneem-name{color:#F2D28B!important;text-shadow:0 0 16px rgba(241,217,167,.12)}
+.copy.contract,.copy.contract p{color:#fff!important}
+.copy.contract small,.copy.contract h2{color:#F2D28B!important}
+.progress i{background:linear-gradient(90deg,#fff,#F2D28B,#fff)!important}
+
+
+/* === FINAL VISUAL OVERRIDE: WHITE + GOLD ONLY === */
+.copy, .copy p, .copy h1, .copy h2, .hold-label, .details div { color:#FFFFFF !important; }
+.copy.kicker, .copy small, .copy.hero em, .copy.title h2, .copy.contract h2 { color:#F2D28B !important; }
+.anas-name { color:#FFFFFF !important; text-shadow:0 0 14px rgba(255,255,255,.12) !important; }
+.raneem-name, .names-x { color:#F2D28B !important; text-shadow:0 0 14px rgba(242,210,139,.16) !important; }
+.copy.names h1 span, .copy.final h2 span { color:inherit; }
+.copy.names h1 .anas-name, .copy.final h2 .anas-name { color:#FFFFFF !important; }
+.copy.names h1 .raneem-name, .copy.final h2 .raneem-name,
+.copy.names h1 .names-x, .copy.final h2 .names-x { color:#F2D28B !important; }
+.copy.title p, .copy.contract p, .copy.final p, .copy.names p, .copy.body p { color:rgba(255,255,255,.86) !important; }
+.copy.contract { color:#FFFFFF !important; }
+.details div { border-top-color:rgba(242,210,139,.22) !important; }
+.hud { color:rgba(255,255,255,.55) !important; }
+.hud .brand i { background:#F2D28B !important; box-shadow:0 0 14px #F2D28B !important; }
+.progress i { background:linear-gradient(90deg,#FFFFFF,#F2D28B,#FFFFFF) !important; }
+.hold-ring { border-color:rgba(242,210,139,.48) !important; }
+.hold-ring::before { background:rgba(242,210,139,.14) !important; border-color:rgba(242,210,139,.55) !important; }
+
+</style>
+</head>
+<body>
+<div id="invite">
+  <div class="shell" id="shell">
+    <canvas id="c"></canvas>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+
+    <div class="hud">
+      <div class="brand"><i></i><span>ANAS × RANEEM</span></div>
+      <span>HOLD THE THREAD</span>
+    </div>
+
+    <div class="copy kicker" id="c0">A LIVING INVITATION</div>
+    <div class="copy hero" id="c1">لا تشاهد الحكاية فقط…<br><em>أمسك خيطها.</em></div>
+    <div class="copy body" id="c2" style="top:49%"><p>اضغط باستمرار على الدائرة. ما دمت ممسكًا بها، تتحرك القصة. عندما ترفع إصبعك… يتوقف الزمن في نفس اللحظة.</p></div>
+    <div class="copy names" id="c3"><h1><span class="anas-name" id="anasName">أنس</span> <span class="names-x">×</span> <span class="raneem-name" id="raneemName">رنيم</span></h1><p>خيط أنس الأبيض وخيط رنيم الذهبي… يرسمان قلبًا واحدًا.</p></div>
+    <div class="copy title" id="c4"><small>CHAPTER / 01</small><h2>الجاهة</h2><p>الخيط يتحول إلى مجلس، والقهوة إلى دوائر لقاء، والوجوه تكتمل حول اللحظة.</p></div>
+    <div class="copy contract" id="c5"><small>CHAPTER / 02</small><h2>كتب الكتاب</h2><p>ثم يصير الخيط حبرًا… والحبر عهدًا يحمل اسمين.</p></div>
+    <div class="copy final" id="c6"><small>THE BEGINNING</small><h2><span class="anas-name">أنس</span> <span class="names-x">×</span> <span class="raneem-name">رنيم</span></h2><p>الجمعة 18 سبتمبر 2026<br>من 4:00 إلى 7:00 مساءً<br>ديوان آل صمادي</p></div>
+
+    <div class="details" id="details">
+      <div>الجمعة<br>18 / 09 / 2026</div>
+      <div>الوقت<br>4:00 — 7:00 مساءً</div>
+      <div>المكان<br>ديوان آل صمادي</div>
+    </div>
+
+    <div class="map-wrap" id="mapWrap">
+      <a class="map-btn" href="https://maps.app.goo.gl/FQ72wBcbtMUydeMv7?g_st=ic" target="_blank" rel="noopener">فتح الموقع على Google Maps</a>
+    </div>
+
+    <div class="pause-chip">توقف الزمن هنا</div>
+
+    <button class="hold-ui" id="holdButton" type="button" aria-label="اضغط باستمرار لمتابعة الدعوة">
+      <span class="hold-ring"></span>
+      <span class="hold-label" id="holdLabel">اضغط باستمرار لتمسك الخيط</span>
+    </button>
+
+    <button class="audio" id="audio" type="button" aria-label="تشغيل أو كتم الصوت">♪</button>
+    <div class="progress"><i id="bar"></i></div>
+    <div class="tapzone" id="tapzone" aria-label="اضغط باستمرار لتستمر الدعوة"></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+const shell=document.getElementById('shell'),canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const bar=document.getElementById('bar'),label=document.getElementById('holdLabel'),tap=document.getElementById('tapzone'),holdBtn=document.getElementById('holdButton'),audioBtn=document.getElementById('audio');
+const details=document.getElementById('details'),mapWrap=document.getElementById('mapWrap');
+const anasNameEl=document.getElementById('anasName'),raneemNameEl=document.getElementById('raneemName');
+let W=0,H=0,DPR=1,t=0,last=0,raf=0,holding=false,completed=false,px=.5,py=.58,muted=false,audioCtx=null,master=null,osc=[];
+const TOTAL=39000,particles=[];
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const smooth=(a,b,x)=>{x=clamp((x-a)/(b-a));return x*x*(3-2*x)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+const rgba=(hex,a)=>{const h=hex.replace('#','');const n=parseInt(h,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`};
+
+function resize(){
+  const r=shell.getBoundingClientRect();
+  DPR=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;
+  canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+  buildParticles();
+}
+function buildParticles(){
+  particles.length=0;
+  for(let i=0;i<95;i++)particles.push({x:Math.random(),y:Math.random(),r:.5+Math.random()*1.5,a:.08+Math.random()*.24,s:.2+Math.random()*.8});
+}
+function bg(){
+  const g=ctx.createRadialGradient(W*(.25+.5*px),H*(.18+.38*py),10,W*.5,H*.5,Math.max(W,H)*.75);
+  g.addColorStop(0,'#18272d');g.addColorStop(.35,'#0c1317');g.addColorStop(1,'#050607');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  particles.forEach((p,i)=>{const drift=Math.sin(t*.0004*p.s+i)*4;ctx.globalAlpha=p.a;ctx.fillStyle='#F2D28B';ctx.beginPath();ctx.arc(p.x*W+drift,p.y*H,p.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
+}
+function glow(x,y,r,a,color='#F2D28B'){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,rgba(color,a));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
+function line(points,color,width=2,alpha=1){if(points.length<2)return;ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.stroke();ctx.globalAlpha=1}
+function partial(points,p){const n=Math.max(2,Math.floor(points.length*clamp(p)));return points.slice(0,n)}
+function nameAnchor(el,bias=0){
+  const srect=shell.getBoundingClientRect();
+  if(!el) return [W*.5,H*.40];
+  const r=el.getBoundingClientRect();
+  const x=r.left-srect.left+r.width*(0.5+bias);
+  const y=r.top-srect.top+r.height*.80;
+  return [x,y];
+}
+
+function innerNameAnchor(el){
+  const sr=shell.getBoundingClientRect();
+  if(!el) return [W*.5,H*.40];
+  const r=el.getBoundingClientRect();
+  const center=r.left-sr.left+r.width*.5;
+  const isRight=center>W*.5;
+  // Use the edge of the name closest to the center of the screen.
+  const x=isRight ? (r.left-sr.left+r.width*.10) : (r.right-sr.left-r.width*.10);
+  const y=r.top-sr.top+r.height*.78;
+  return [x,y];
+}
+
+function thread(progress){
+  const pts=[];const sx=W*.5,sy=H*.78,ex=lerp(W*.5,W*px,progress),ey=lerp(H*.7,H*py,progress);
+  for(let i=0;i<=32;i++){const q=i/32;const wave=Math.sin(q*Math.PI*2+t*.0012)*8*(1-q);pts.push([lerp(sx,ex,q)+wave,lerp(sy,ey,q)-Math.sin(q*Math.PI)*80*progress])}
+  glow(ex,ey,42,.18,'#F2D28B');line(pts,'#ffffff',2.1,.95);line(pts.map(p=>[p[0]+2,p[1]+1]),'#F2D28B',1,.65);
+}
+function door(p){
+  const cx=W*.5,top=H*.18,ww=W*.56,hh=H*.47,r=ww*.5;ctx.save();ctx.translate(cx,0);ctx.strokeStyle='rgba(215,183,119,.24)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-ww/2,top+hh);ctx.lineTo(-ww/2,top+r);ctx.arc(0,top+r,r,Math.PI,0);ctx.lineTo(ww/2,top+hh);ctx.stroke();
+  glow(0,top+hh*.62,ww*.75,.22*p,'#F2D28B');const open=105*ease(p);
+  for(const side of[-1,1]){ctx.save();ctx.translate(side*ww/2,top+r);ctx.rotate(side*open*Math.PI/180);ctx.fillStyle='#132229';ctx.strokeStyle='rgba(215,183,119,.2)';ctx.beginPath();ctx.roundRect(side<0?0:-ww/2,-r,ww/2,hh,8);ctx.fill();ctx.stroke();ctx.restore();}
+  ctx.restore();
+}
+function heart(p){
+  const cx=W*.5;
+  const anasStart=innerNameAnchor(anasNameEl);
+  const raneemStart=innerNameAnchor(raneemNameEl);
+
+  // Use the lower of the two name anchors so both halves stay perfectly aligned.
+  const startY=Math.max(anasStart[1],raneemStart[1]);
+  anasStart[1]=startY;
+  raneemStart[1]=startY;
+
+  const bottom=[cx, startY+H*.255];
+  const lobeY=startY+H*.070;
+
+  function bezier(p0,p1,p2,p3,steps=90){
+    const out=[];
+    for(let i=0;i<=steps;i++){
+      const u=i/steps,v=1-u;
+      out.push([
+        v*v*v*p0[0]+3*v*v*u*p1[0]+3*v*u*u*p2[0]+u*u*u*p3[0],
+        v*v*v*p0[1]+3*v*v*u*p1[1]+3*v*u*u*p2[1]+u*u*u*p3[1]
+      ]);
+    }
+    return out;
+  }
+
+  function halfPath(start,sign){
+    // One continuous thread: NAME -> upper lobe -> outer curve -> bottom point.
+    const outer=[cx+sign*W*.275,lobeY];
+    const upper=bezier(
+      start,
+      [start[0]+sign*W*.055, startY-H*.032],
+      [cx+sign*W*.235, startY-H*.048],
+      outer,
+      54
+    );
+    const lower=bezier(
+      outer,
+      [cx+sign*W*.275, startY+H*.145],
+      [cx+sign*W*.095, bottom[1]-H*.030],
+      bottom,
+      92
+    );
+    return upper.concat(lower.slice(1));
+  }
+
+  // Anas is visually on the right; Raneem on the left.
+  const anasSign = anasStart[0] >= cx ? 1 : -1;
+  const raneemSign = -anasSign;
+  const anasPath=halfPath(anasStart,anasSign);
+  const raneemPath=halfPath(raneemStart,raneemSign);
+
+  const drawP=smooth(0,1,p);
+  const white='#FFFFFF';
+  const gold='#F2D28B';
+
+  // No extra heart outline: THESE TWO THREADS ARE THE HEART.
+  line(partial(anasPath,drawP),white,3.0,.99);
+  line(partial(raneemPath,drawP),gold,3.0,.99);
+
+  // Very subtle glow only at the final meeting point.
+  if(drawP>.88){
+    const q=smooth(.88,1,drawP);
+    glow(bottom[0],bottom[1],24,.10*q,gold);
+  }
+}
+
+function majlis(p){
+  const cx=W*.5,cy=H*.58,r=Math.min(W,H)*.17;
+  ctx.globalAlpha=p;ctx.strokeStyle='rgba(215,183,119,.18)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+  for(let i=0;i<6;i++){const ang=-Math.PI*.2+i*Math.PI*.28;const q=clamp(p*1.6-i*.09);const x=cx+Math.cos(ang)*r*1.45,y=cy+Math.sin(ang)*r*1.45;ctx.globalAlpha=q;ctx.fillStyle='#1e2c31';ctx.beginPath();ctx.arc(x,y,15,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.05)';ctx.stroke();}
+  ctx.globalAlpha=p;ctx.strokeStyle='#F2D28B';ctx.beginPath();ctx.roundRect(cx-17,cy-12,34,28,5);ctx.stroke();ctx.beginPath();ctx.arc(cx+21,cy,6,-Math.PI/2,Math.PI/2);ctx.stroke();
+  for(let s=0;s<3;s++){ctx.globalAlpha=p*(1-s*.25);ctx.strokeStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.moveTo(cx-4+s*4,cy-18);ctx.bezierCurveTo(cx+8+s*4,cy-35,cx-10+s*4,cy-45,cx+2+s*4,cy-58);ctx.stroke();}
+  ctx.globalAlpha=1;
+}
+function contract(p){
+  const ww=W*.74,hh=H*.57,x=(W-ww)/2,y=H*.21;
+  ctx.save();ctx.translate(W/2,H/2);ctx.rotate((1-p)*.16);ctx.scale(.78+.22*ease(p),.78+.22*ease(p));ctx.translate(-W/2,-H/2);
+  ctx.globalAlpha=p;ctx.fillStyle='#10171b';ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=50;ctx.fillRect(x,y,ww,hh);ctx.shadowBlur=0;ctx.strokeStyle='rgba(241,217,167,.28)';ctx.strokeRect(x+10,y+10,ww-20,hh-20);ctx.globalAlpha=1;ctx.restore();
+  const sp=smooth(.35,1,p);ctx.strokeStyle='#F2D28B';ctx.lineWidth=2;ctx.lineCap='round';
+  for(let k=0;k<2;k++){const bx=x+ww*(k?0.55:.12),by=y+hh*.78;ctx.beginPath();for(let i=0;i<35;i++){const q=i/34;if(q>sp)break;const xx=bx+q*ww*.27;const yy=by+Math.sin(q*16+k)*10*(1-q);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.stroke();}
+}
+function fireworkBurst(cx,cy,p,delay=0,colorA='#F2D28B',colorB='#ffffff'){
+  const q=clamp((p-delay)/(1-delay));
+  if(q<=0)return;
+  const trail=smooth(0,.35,q),burst=smooth(.18,1,q);
+  const trailPts=[];
+  for(let i=0;i<=28;i++){
+    const u=i/28;
+    trailPts.push([lerp(W*.5,cx,u)+Math.sin(u*Math.PI+t*.001+i)*6*(1-u), lerp(H*.84,cy,u)-Math.sin(u*Math.PI)*28]);
+  }
+  line(partial(trailPts,trail),colorB,2.2,.85);
+  if(trail>.7) glow(cx,cy,34,.16*burst,colorA);
+  const rays=16;
+  for(let i=0;i<rays;i++){
+    const ang=(Math.PI*2/rays)*i + delay*3;
+    const len=(26+(i%3)*10)*(0.35+0.65*burst);
+    const ex=cx+Math.cos(ang)*len, ey=cy+Math.sin(ang)*len;
+    line([[cx,cy],[lerp(cx,ex,.58),lerp(cy,ey,.58)],[ex,ey]], i%2?colorA:colorB, i%2?1.8:1.4, .88*burst);
+    ctx.globalAlpha=.65*burst; ctx.fillStyle=i%2?colorA:colorB; ctx.beginPath(); ctx.arc(ex,ey,1.8+(i%2)*.7,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+  }
+}
+function fireworks(p){
+  fireworkBurst(W*.28,H*.34,p,.0,'#F2D28B','#ffffff');
+  fireworkBurst(W*.72,H*.27,p,.18,'#F2D28B','#F2D28B');
+  fireworkBurst(W*.52,H*.18,p,.34,'#F2D28B','#ffffff');
+  if(p>.45){
+    for(let i=0;i<26;i++){
+      const q=clamp((p-.45)/.55); const x=W*(.2+((i*37)%60)/100); const y=H*(.14+((i*29)%52)/100); const yy=y + Math.sin(t*.002+i)*3;
+      ctx.globalAlpha=.12*q; ctx.fillStyle=i%2?'#F2D28B':'#ffffff'; ctx.beginPath(); ctx.arc(x,yy,1.4+(i%3)*.4,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+    }
+  }
+}
+
+function render(){
+  ctx.clearRect(0,0,W,H);bg();
+  const P=t/TOTAL;
+  const th=smooth(.03,.18,P)*(1-smooth(.22,.29,P));
+  const d=smooth(.14,.30,P)*(1-smooth(.34,.38,P));
+  const h=smooth(.29,.45,P)*(1-smooth(.49,.53,P));
+  const m=smooth(.47,.62,P)*(1-smooth(.67,.70,P));
+  const c=smooth(.64,.79,P)*(1-smooth(.83,.86,P));
+  const f=smooth(.80,1,P);
+  if(th>0)thread(th); if(d>0)door(d); if(h>0)heart(h); if(m>0)majlis(m); if(c>0)contract(c); if(f>0)fireworks(f);
+  bar.style.width=(P*100)+'%';
+  document.getElementById('c0').classList.toggle('on',P<.12);
+  document.getElementById('c1').classList.toggle('on',P<.12);
+  document.getElementById('c2').classList.toggle('on',P<.12);
+  document.getElementById('c3').classList.toggle('on',P>.32&&P<.50);
+  document.getElementById('c4').classList.toggle('on',P>.48&&P<.67);
+  document.getElementById('c5').classList.toggle('on',P>.66&&P<.84);
+  document.getElementById('c6').classList.toggle('on',P>.86);
+  details.classList.toggle('on',P>.92); mapWrap.classList.toggle('on',P>.94);
+}
+function startAudio(){
+  if(audioCtx)return;
+  try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();master=audioCtx.createGain();master.gain.value=.11;master.connect(audioCtx.destination);[[55,'sine',.035],[82.41,'sine',.018],[110,'triangle',.006]].forEach(([f,type,gain])=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=f;g.gain.value=gain;o.connect(g);g.connect(master);o.start();osc.push(o)})}catch(e){}
+}
+function setAudio(active){if(!master)return;master.gain.setTargetAtTime((active&&!muted)?.11:0,audioCtx.currentTime,.08)}
+function updatePointer(e){
+  if(!e||typeof e.clientX!=='number') return;
+  const rect=shell.getBoundingClientRect();
+  px=clamp((e.clientX-rect.left)/rect.width); py=clamp((e.clientY-rect.top)/rect.height);
+}
+function loop(now){
+  if(!holding)return; if(!last)last=now; t+=now-last; last=now; if(t>TOTAL)t=TOTAL; render();
+  if(t>=TOTAL){holding=false; completed=true; shell.classList.remove('holding'); shell.classList.add('completed'); label.textContent='اكتملت الحكاية'; holdBtn.disabled=true; tap.style.pointerEvents='none'; setAudio(false); render(); return;}
+  raf=requestAnimationFrame(loop);
+}
+function down(e){
+  e.preventDefault();
+  if(completed||t>=TOTAL) return;
+  updatePointer(e);
+  if(e.currentTarget&&e.currentTarget.setPointerCapture&&e.pointerId!==undefined){try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}}
+  startAudio(); holding=true; last=0; shell.classList.add('holding'); shell.classList.remove('paused-progress'); label.textContent='أنت تمسك خيط الحكاية…'; setAudio(true); if(navigator.vibrate)navigator.vibrate(12); raf=requestAnimationFrame(loop);
+}
+function up(){ if(!holding)return; holding=false; cancelAnimationFrame(raf); last=0; shell.classList.remove('holding'); shell.classList.add('paused-progress'); label.textContent='توقف الزمن — اضغط باستمرار لتكمل'; setAudio(false); render(); }
+function bindHold(el){ el.addEventListener('pointerdown',down,{passive:false}); el.addEventListener('pointerup',up,{passive:false}); el.addEventListener('pointercancel',up,{passive:false}); el.addEventListener('lostpointercapture',up); }
+bindHold(tap); bindHold(holdBtn);
+holdBtn.addEventListener('contextmenu',e=>e.preventDefault());
+tap.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')up()});
+tap.addEventListener('pointermove',e=>updatePointer(e));
+holdBtn.addEventListener('pointermove',e=>updatePointer(e));
+audioBtn.addEventListener('click',e=>{e.stopPropagation();muted=!muted;audioBtn.textContent=muted?'×':'♪';setAudio(holding)});
+const mapBtn=document.querySelector('.map-btn');
+if(mapBtn){['pointerdown','pointerup','click'].forEach(type=>mapBtn.addEventListener(type,e=>e.stopPropagation()))}
+window.addEventListener('resize',resize);resize();render();
+})();
+</script>
+</body>
+</html>
